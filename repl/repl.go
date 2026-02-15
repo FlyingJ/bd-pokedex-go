@@ -1,5 +1,17 @@
 package repl
 
-func cleanInput(text string) []string {
-    return []string
+import (
+    "strings"
+)
+
+func cleanInput(rawText string) []string {
+    whiteSpace := " \t\n"
+    wordSeperator := " "
+    return strings.Split(
+        strings.Trim(
+            strings.ToLower(rawText),
+            whiteSpace,
+        ),
+        wordSeperator,
+    )
 }

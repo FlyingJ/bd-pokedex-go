@@ -1,3 +1,5 @@
+package repl
+
 import (
     "testing"
 )
@@ -5,32 +7,51 @@ import (
 func TestCleanInput(t *testing.T) {
     cases := []struct {
         input    string
-        expected []string
+        expectation []string
     }{
         {
             input:    "hello world",
-            expected: []string{"hello", "world"},
+            expectation: []string{"hello", "world"},
         },
         {
-            input:    "  hello  world  ",
-            expected: []string{"hello", "world"},
+            input:    "  hello world  ",
+            expectation: []string{"hello", "world"},
         },
         {
             input:    "Charmander Bulbasaur PIKACHU",
-            expected: []string{"charmander", "bulbasaur", "pikachu"},
+            expectation: []string{"charmander", "bulbasaur", "pikachu"},
         },
     }
     for _, c := range cases {
-        actual := cleanInput(c.input)
-        // Check the length of the actual slice against the expected slice
+        input := c.input
+        expectation := c.expectation
+        result := cleanInput(input)
+        // Check the length of the actual slice against the expectation slice
         // if they don't match, use t.Errorf to print an error message
         // and fail the test
-        for i := range actual {
-            word := actual[i]
-            expectedWord := c.expected[i]
-            // Check each word in the slice
-            // if they don't match, use t.Errorf to print an error message
-            // and fail the test
+        if len(result) != len(expectation) {
+            t.Errorf(
+                "Error: length of %v is %d while length of %v is %d",
+                result,
+                len(result),
+                expectation,
+                len(expectation),
+            )
+        }
+        // Check each word in the slice
+        // if they don't match, use t.Errorf to print an error message
+        // and fail the test
+        for i := range result {
+            resultWord := result[i]
+            expectedWord := expectation[i]
+            if resultWord != expectedWord {
+                t.Errorf(
+                    "Error: %s and %s do not match",
+                    resultWord,
+                    expectedWord,
+                )
+            }
+
         }
     }
 }
