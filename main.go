@@ -1,9 +1,23 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"bd-pokedex-go/repl"
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	// create user input scanner
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for ;; {
+		fmt.Print("Pokedex > ")
+		if ok := scanner.Scan(); !ok {
+			fmt.Println("Error: input scan error")
+		}
+
+		input := repl.CleanInput(scanner.Text())
+		fmt.Printf("Your command was: %s\n", input[0])
+	}
 }

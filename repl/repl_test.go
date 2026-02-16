@@ -1,8 +1,6 @@
 package repl
 
-import (
-    "testing"
-)
+import "testing"
 
 func TestCleanInput(t *testing.T) {
     cases := []struct {
@@ -33,7 +31,7 @@ func TestCleanInput(t *testing.T) {
     for _, c := range cases {
         input := c.input
         expectation := c.expectation
-        result := cleanInput(input)
+        result := CleanInput(input)
         // Check the length of the actual slice against the expectation slice
         // if they don't match, use t.Errorf to print an error message
         // and fail the test
