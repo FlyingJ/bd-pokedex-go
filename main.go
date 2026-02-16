@@ -4,27 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"bd-pokedex-go/repl"
+	"bd-pokedex-go/internal/repl"
 )
-
-type cliCommand struct {
-	name		string
-	description string
-	callback	func() error
-}
-
-map[string]cliCommand{
-	"exit": {
-		name:		 "exit",
-		description: "Exit the Pokedex",
-		callback:	 commandExit,
-	},
-}
-
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-}
 
 func main() {
 	// create user input scanner
