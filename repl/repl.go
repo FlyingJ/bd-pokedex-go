@@ -5,7 +5,7 @@ import (
     "strings"
 )
 
-func cleanInput(text string) []string {
+func CleanInput(text string) []string {
     wsStr := " \t\n"
     wsRx := regexp.MustCompile(`[ \t\n]+`)
 
