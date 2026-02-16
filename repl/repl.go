@@ -1,17 +1,15 @@
 package repl
 
 import (
+    "regexp"
     "strings"
 )
 
-func cleanInput(rawText string) []string {
-    whiteSpace := " \t\n"
-    wordSeperator := " "
-    return strings.Split(
-        strings.Trim(
-            strings.ToLower(rawText),
-            whiteSpace,
-        ),
-        wordSeperator,
-    )
+func cleanInput(text string) []string {
+    wsStr := " \t\n"
+    wsRx := regexp.MustCompile(`[ \t\n]+`)
+
+    text = strings.ToLower(text)
+    text = strings.Trim(text, wsStr)
+    return wsRx.Split(text, -1)
 }
