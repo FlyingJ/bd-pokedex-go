@@ -1,32 +1,14 @@
 package repl
 
 import (
-    "errors"
     "fmt"
     "os"
 )
 
-type cliCommand struct {
-    name        string
-    description string
-    callback    func() error
-}
-
-var cliCommands = map[string]cliCommand{
-    "exit": {
-        name:        "exit",
-        description: "Exit the Pokedex",
-        callback:    commandExit,
-    },
-    "help": {
-        name:        "help",
-        description: "Displays a help message",
-        callback:    commandHelp,
-    },
-}
-
-func GetCliCommands() map[string]cliCommand {
-    return cliCommands
+type Command struct {
+    Name        string
+    Description string
+    Callback    func() error
 }
 
 func commandExit() error {
@@ -35,16 +17,28 @@ func commandExit() error {
     return nil
 }
 
-func print_usage() error {
+func commandHelp() error {
+    fmt.Println()
     fmt.Println("Welcome to the Pokedex!")
     fmt.Println("Usage:")
-    fmt.Println("")
-    for key, value := range GetCliCommands() {
-        fmt.Println("%s: %s", key, value.description)
+    fmt.Println()
+    for _, command := range GetCommands() {
+        fmt.Printf("%s: %s\n", command.Name, command.Description)
     }
     return nil
 }
 
-func commandHelp() error {
-    return print_usage()
+func GetCommands() map[string]Command {
+    return map[string]Command{
+        "exit": {
+            Name:        "exit",
+            Description: "Exit the Pokedex",
+            Callback:    commandExit,
+        },
+        "help": {
+            Name:        "help",
+            Description: "Displays a help message",
+            Callback:    commandHelp,
+        },
+    }
 }
