@@ -12,16 +12,39 @@ type cliCommand struct {
     callback    func() error
 }
 
-var CLICommandRegistry = map[string]cliCommand{
+var cliCommands = map[string]cliCommand{
     "exit": {
         name:        "exit",
         description: "Exit the Pokedex",
         callback:    commandExit,
     },
+    "help": {
+        name:        "help",
+        description: "Displays a help message",
+        callback:    commandHelp,
+    },
+}
+
+func GetCliCommands() map[string]cliCommand {
+    return cliCommands
 }
 
 func commandExit() error {
     fmt.Println("Closing the Pokedex... Goodbye!")
     os.Exit(0)
-    return errors.New("Error: no idea how to get here")
+    return nil
+}
+
+func print_usage() error {
+    fmt.Println("Welcome to the Pokedex!")
+    fmt.Println("Usage:")
+    fmt.Println("")
+    for key, value := range GetCliCommands() {
+        fmt.Println("%s: %s", key, value.description)
+    }
+    return nil
+}
+
+func commandHelp() error {
+    return print_usage()
 }
