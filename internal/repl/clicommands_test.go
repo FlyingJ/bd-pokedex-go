@@ -4,15 +4,8 @@ import (
 	"testing"
 )
 
-func TestNNNMMM(t *testing.T) {
-	cases := []struct {
-		// input       string
-		// expectation []string
-	}{
-		{
-			// input:       "  hello  world  ",
-			// expectation: []string{"hello", "world"},
-		},
-	// add more cases here
-}
+func TestCommandHelp(t *testing.T) {
+	if err := commandHelp(); err != nil {
+		t.Errorf("Error: commandHelp returned non-nil: %v", err)
+	}
 }
