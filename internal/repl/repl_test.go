@@ -4,7 +4,7 @@ import "testing"
 
 func TestCleanInput(t *testing.T) {
     cases := []struct {
-        input    string
+        input       string
         expectation []string
     }{
         {

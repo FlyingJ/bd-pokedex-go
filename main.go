@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"bd-pokedex-go/repl"
+	"bd-pokedex-go/internal/repl"
 )
 
 func main() {
@@ -18,6 +18,13 @@ func main() {
 		}
 
 		input := repl.CleanInput(scanner.Text())
-		fmt.Printf("Your command was: %s\n", input[0])
+		keyword := input[0]
+		if command, exists := repl.GetCommands()[keyword]; exists {
+			if err := command.Callback(); err != nil {
+				fmt.Errorf("Error: %v", err)
+			}
+		} else {
+			fmt.Println("Unknown command")
+		}
 	}
 }
