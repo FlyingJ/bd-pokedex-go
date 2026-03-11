@@ -1,7 +1,9 @@
 package repl
 
 import (
+    poke "bd-pokedex-go/internal/pokeapi"
     "fmt"
+    "net/http"
     "os"
 )
 
@@ -28,6 +30,14 @@ func commandHelp() error {
     return nil
 }
 
+func commandMap() error {
+    return fmt.Errorf("not implemented")
+}
+
+func commandMapb() error {
+    return fmt.Errorf("not implemented")
+}
+
 func GetCommands() map[string]Command {
     return map[string]Command{
         "exit": {
@@ -39,6 +49,16 @@ func GetCommands() map[string]Command {
             Name:        "help",
             Description: "Displays a help message",
             Callback:    commandHelp,
+        },
+        "map": {
+            Name:        "map",
+            Description: "Displays the next page of locations",
+            Callback:    commandMap,
+        },
+        "mapb": {
+            Name:        "mapb",
+            Description: "Displays the previous page of locations",
+            Callback:    commandMapb,
         },
     }
 }
