@@ -1,9 +1,9 @@
 package repl
 
 import (
-    poke "bd-pokedex-go/internal/pokeapi"
+    // poke "bd-pokedex-go/internal/pokeapi"
     "fmt"
-    "net/http"
+    // "net/http"
     "os"
 )
 

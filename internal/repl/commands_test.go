@@ -1,27 +1,28 @@
-package repl
+package repl_test
 
 import (
+	"bd-pokedex-go/internal/repl"
 	"testing"
 )
 
-func TestCommandHelp(t *testing.T) {
-	if err := commandHelp(); err != nil {
-		t.Errorf("Error: commandHelp returned non-nil: %v", err)
+func TestGetCommands(t *testing.T) {
+	commands := repl.GetCommands()
+
+	// ensure a 'bogus' command does not exist
+	commandName := "bogus"
+	if _, exists := commands[commandName]; exists {
+		t.Errorf("command %s should not exist", commandName)
+	}
+	// ensure a legitimate command does exist
+	commandName = "help"
+	if _, exists := commands[commandName]; !exists {
+		t.Errorf("command %s should exist", commandName)
 	}
 }
 
-func TestGetCommands(t *testing.T) {
-	commands := GetCommands()
-
-	if _, exists := commands["bogus"]; exists {
-		t.Errorf("Error: bogus command should not exist")
-	}
-
-	if helpCommand, exists := commands["help"]; !exists {
-		t.Errorf("Error: help command should exist")
-	} else {
-		if err := helpCommand.Callback(); err != nil {
-			t.Errorf("Error: help command callback did not return nil")
-		}
+func TestCommandHelp(t *testing.T) {
+	commandName := "help"
+	if err := repl.GetCommands()[commandName].Callback(); err != nil {
+		t.Errorf("command %s returned non-nil: %v", commandName, err)
 	}
 }
