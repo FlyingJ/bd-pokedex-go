@@ -1,9 +1,8 @@
 package repl
 
 import (
-    // poke "bd-pokedex-go/internal/pokeapi"
+    "bd-pokedex-go/internal/config"
     "fmt"
-    // "net/http"
     "os"
 )
 
@@ -13,13 +12,13 @@ type Command struct {
     Callback    func() error
 }
 
-func commandExit() error {
+func commandExit(c *config.Config) error {
     fmt.Println("Closing the Pokedex... Goodbye!")
     os.Exit(0)
     return nil
 }
 
-func commandHelp() error {
+func commandHelp(c *config.Config) error {
     fmt.Println()
     fmt.Println("Welcome to the Pokedex!")
     fmt.Println("Usage:")
@@ -30,11 +29,11 @@ func commandHelp() error {
     return nil
 }
 
-func commandMap() error {
+func commandMap(c *config.Config) error {
     return fmt.Errorf("not implemented")
 }
 
-func commandMapb() error {
+func commandMapb(c *config.Config) error {
     return fmt.Errorf("not implemented")
 }
 
