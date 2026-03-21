@@ -13,7 +13,7 @@ func TestInit(t *testing.T) {
         t.Errorf("config.Next is not set to call PokeAPI")
     }
 
-    if config.Previous != nil {
-        t.Errorf("config.Previous is not nil")
+    if config.Previous != "" {
+        t.Errorf("config.Previous is not empty string")
     }
 }

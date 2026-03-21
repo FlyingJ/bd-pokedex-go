@@ -7,6 +7,6 @@ type Config struct {
 
 func (c *Config) Init() error {
 	c.Next = "https://pokeapi.co/api/v2/location-areas/"
-	c.Previous = nil
+	c.Previous = ""
 	return nil
 }
