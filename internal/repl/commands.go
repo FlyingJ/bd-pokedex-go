@@ -9,7 +9,7 @@ import (
 type Command struct {
     Name        string
     Description string
-    Callback    func() error
+    Callback    func(*config.Config) error
 }
 
 func commandExit(c *config.Config) error {

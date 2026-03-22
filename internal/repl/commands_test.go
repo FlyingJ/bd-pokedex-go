@@ -1,13 +1,13 @@
 package repl_test
 
 import (
+	"bd-pokedex-go/internal/config"
 	"bd-pokedex-go/internal/repl"
 	"testing"
 )
 
 func TestGetCommands(t *testing.T) {
 	commands := repl.GetCommands()
-
 	// ensure a 'bogus' command does not exist
 	commandName := "bogus"
 	if _, exists := commands[commandName]; exists {
@@ -21,8 +21,10 @@ func TestGetCommands(t *testing.T) {
 }
 
 func TestCommandHelp(t *testing.T) {
+	var c config.Config
+	c.Init()
 	commandName := "help"
-	if err := repl.GetCommands()[commandName].Callback(); err != nil {
+	if err := repl.GetCommands()[commandName].Callback(&c); err != nil {
 		t.Errorf("command %s returned non-nil: %v", commandName, err)
 	}
 }
