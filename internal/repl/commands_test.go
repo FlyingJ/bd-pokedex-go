@@ -1,9 +1,10 @@
 package repl_test
 
 import (
-	"bd-pokedex-go/internal/config"
-	"bd-pokedex-go/internal/repl"
 	"testing"
+
+	"bd-pokedex-go/internal/api"
+	"bd-pokedex-go/internal/repl"
 )
 
 func TestGetCommands(t *testing.T) {
@@ -21,8 +22,7 @@ func TestGetCommands(t *testing.T) {
 }
 
 func TestCommandHelp(t *testing.T) {
-	var c config.Config
-	c.Init()
+	c := api.NewConfig()
 	commandName := "help"
 	if err := repl.GetCommands()[commandName].Callback(&c); err != nil {
 		t.Errorf("command %s returned non-nil: %v", commandName, err)
