@@ -31,7 +31,7 @@ func PrintNames(resources []NamedAPIResource) {
 }
 
 type Client struct {
-    Cfg        Config
+    Cfg        *Config
     HttpClient *http.Client
 }
 
@@ -47,7 +47,7 @@ var endpoints = map[string]Endpoint{
     "region":        {Path: "/region", Named: true},
 }
 
-func NewClient(cfg Config) *Client {
+func NewClient(cfg *Config) *Client {
     return &Client{
         Cfg:        cfg,
         HttpClient: http.DefaultClient,
