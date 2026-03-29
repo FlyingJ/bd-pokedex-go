@@ -21,7 +21,7 @@ func TestGetJSON(t *testing.T) {
 		Next: "https://example.test/api/v2/location-area/",
 	}
 
-	client := api.NewClient(cfg)
+	client := api.NewClient(&cfg)
 	client.HttpClient = &http.Client{
 		Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
 			if r.Method != http.MethodGet {
