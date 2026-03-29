@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"bd-pokedex-go/internal/config"
+	"bd-pokedex-go/internal/api"
 	"bd-pokedex-go/internal/repl"
 )
 
@@ -12,8 +12,7 @@ func main() {
 	// create user input scanner
 	scanner := bufio.NewScanner(os.Stdin)
 	// configure our pokedex
-	var c config.Config
-	c.Init()
+	c := api.NewConfig()
 
 	for ;; {
 		fmt.Print("Pokedex > ")
