@@ -1,24 +1,26 @@
 package repl
 
 import (
-    "bd-pokedex-go/internal/config"
+    "context"
     "fmt"
     "os"
+
+    "bd-pokedex-go/internal/api"
 )
 
 type Command struct {
     Name        string
     Description string
-    Callback    func(*config.Config) error
+    Callback    func(*api.Config) error
 }
 
-func commandExit(c *config.Config) error {
+func commandExit(c *api.Config) error {
     fmt.Println("Closing the Pokedex... Goodbye!")
     os.Exit(0)
     return nil
 }
 
-func commandHelp(c *config.Config) error {
+func commandHelp(c *api.Config) error {
     fmt.Println()
     fmt.Println("Welcome to the Pokedex!")
     fmt.Println("Usage:")
@@ -29,11 +31,12 @@ func commandHelp(c *config.Config) error {
     return nil
 }
 
-func commandMap(c *config.Config) error {
-    return fmt.Errorf("not implemented")
+func commandMap(c *api.Config) error {
+    client := api.NewClient(c)
+    return client.ListLocationAreas(context.Background())
 }
 
-func commandMapb(c *config.Config) error {
+func commandMapb(c *api.Config) error {
     return fmt.Errorf("not implemented")
 }
 
