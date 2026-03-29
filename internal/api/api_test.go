@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"pokeapi/internal/api"
+	"bd-pokedex-go/internal/api"
 )
 
 type roundTripFunc func(*http.Request) (*http.Response, error)

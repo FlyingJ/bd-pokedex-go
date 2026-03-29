@@ -1,8 +1,9 @@
 package api_test
 
 import (
-    "pokeapi/internal/api"
     "testing"
+    
+    "bd-pokedex-go/internal/api"
 )
 
 func TestConfig(t *testing.T) {

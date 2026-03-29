@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bd-pokedex-go/internal/config"
-	"bd-pokedex-go/internal/repl"
 	"bufio"
 	"fmt"
 	"os"
+	"bd-pokedex-go/internal/config"
+	"bd-pokedex-go/internal/repl"
 )
 
 func main() {
