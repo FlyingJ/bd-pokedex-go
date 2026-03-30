@@ -78,6 +78,9 @@ func GetJSON[T any](ctx context.Context, c *Client, url string) (*T, error) {
     return &value, nil
 }
 
+/*
+MERGE THESE
+*/
 func (c *Client) ListLocationAreas(ctx context.Context) error {
     res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Next)
     if err != nil {
@@ -88,3 +91,19 @@ func (c *Client) ListLocationAreas(ctx context.Context) error {
     PrintNames(res.Results)
     return nil
 }
+/*
+MERGE THESE
+*/
+func (c *Client) ListLocationAreasBack(ctx context.Context) error {
+    res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Previous)
+    if err != nil {
+        return fmt.Errorf("error retrieving json: %w", err)
+    }
+    c.Cfg.Previous = res.Previous
+    c.Cfg.Next = res.Next
+    PrintNames(res.Results)
+    return nil
+}
+/*
+MERGE THESE
+*/
