@@ -37,6 +37,10 @@ func commandMap(c *api.Config) error {
 }
 
 func commandMapb(c *api.Config) error {
+    if c.Cfg.Previous == "" {
+        fmt.Println("You are on the first page")
+        return nil
+    }
     return fmt.Errorf("not implemented")
 }
 
