@@ -7,12 +7,12 @@ import (
 
 type cacheEntry struct{
 	createdAt time.Time
-	val	  []byte
+	val []byte
 }
 
 type Cache struct{
 	Entries map[string]cacheEntry
-	Mu	sync.Mutex
+	Mu sync.Mutex
 }
 	
 func NewCache() *Cache {
