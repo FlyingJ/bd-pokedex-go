@@ -15,3 +15,9 @@ type Cache struct{
 	Mu	sync.Mutex
 }
 	
+func NewCache() *Cache {
+	return &Cache{
+		Entries: map[string]cacheEntry{}
+		Mu: sync.Mutex{}
+	}
+}
