@@ -79,7 +79,7 @@ func GetJSON[T any](ctx context.Context, c *Client, url string) (*T, error) {
 }
 
 /*
-MERGE THESE
+REFACTOR THESE
 */
 func (c *Client) ListLocationAreas(ctx context.Context) error {
     res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Next)
@@ -92,7 +92,7 @@ func (c *Client) ListLocationAreas(ctx context.Context) error {
     return nil
 }
 /*
-MERGE THESE
+REFACTOR THESE
 */
 func (c *Client) ListLocationAreasBack(ctx context.Context) error {
     res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Previous)
@@ -105,5 +105,5 @@ func (c *Client) ListLocationAreasBack(ctx context.Context) error {
     return nil
 }
 /*
-MERGE THESE
+REFACTOR THESE
 */
