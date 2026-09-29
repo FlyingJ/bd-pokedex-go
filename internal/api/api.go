@@ -27,6 +27,12 @@ type APIResourceList[T any] struct {
     Results  []T    `json:"results"`
 }
 
+type LocationArea struct {
+	PokemonEncounters []struct {
+		Pokemon NamedAPIResource `json:"pokemon"`
+	} `json:"pokemon_encounters"`
+}
+
 func PrintNames(resources []NamedAPIResource) {
     for _, r := range resources {
         fmt.Println(r.Name)
