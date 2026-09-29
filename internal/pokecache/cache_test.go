@@ -1,11 +1,83 @@
-package cache_test
+package pokecache_test
 
 import (
+	"bytes"
+	"fmt"
 	"testing"
+	"time"
 
-	"bd-pokedex-go/internal/cache"
+	"bd-pokedex-go/internal/pokecache"
 )
 
-func TestNewCache(t *testing.T) {
-	t.Errorf("not implemented")
+func TestCache(t *testing.T) {
+	reapTime := 5 * time.Second
+	cache := pokecache.NewCache(reapTime)
+
+	key := "test"
+	message := []byte("this is some sort of test message")
+
+	cache.Add(key, message)
+
+	val, ok := cache.Get(key)
+	if ok {
+		if ! bytes.Equal(val, message) {
+			t.Errorf("expect: %s; got: %s", message, val)
+		}
+	} else {
+		t.Errorf("key (%s) not found", key)
+	}
+}
+
+func TestAddGet(t *testing.T) {
+	const interval = 5 * time.Second
+	cases := []struct {
+		key string
+		val []byte
+	}{
+		{
+			key: "https://example.com",
+			val: []byte("testdata"),
+		},
+		{
+			key: "https://example.com/path",
+			val: []byte("moretestdata"),
+		},
+	}
+
+	for i, c := range cases {
+		t.Run(fmt.Sprintf("Test case %v", i), func(t *testing.T) {
+			cache := pokecache.NewCache(interval)
+			cache.Add(c.key, c.val)
+			val, ok := cache.Get(c.key)
+			if !ok {
+				t.Errorf("expected to find key")
+				return
+			}
+			if string(val) != string(c.val) {
+				t.Errorf("expected to find value")
+				return
+			}
+		})
+	}
+}
+
+func TestReapLoop(t *testing.T) {
+	const baseTime = 5 * time.Millisecond
+	const waitTime = baseTime + 5*time.Millisecond
+	cache := pokecache.NewCache(baseTime)
+	cache.Add("https://example.com", []byte("testdata"))
+
+	_, ok := cache.Get("https://example.com")
+	if !ok {
+		t.Errorf("expected to find key")
+		return
+	}
+
+	time.Sleep(waitTime)
+
+	_, ok = cache.Get("https://example.com")
+	if ok {
+		t.Errorf("expected to not find key")
+		return
+	}
 }

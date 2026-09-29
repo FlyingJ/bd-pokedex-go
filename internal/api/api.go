@@ -4,7 +4,10 @@ import (
     "context"
     "encoding/json"
     "fmt"
+    "io"
     "net/http"
+
+    "bd-pokedex-go/internal/pokecache"
 )
 
 // PokeAPI returns a few reusable response shapes across many endpoints.
@@ -47,42 +50,53 @@ var endpoints = map[string]Endpoint{
     "region":        {Path: "/region", Named: true},
 }
 
-func NewClient(cfg *Config) *Client {
+func NewClient(config *Config) *Client {
     return &Client{
-        Cfg:        cfg,
+        Cfg:        config,
         HttpClient: http.DefaultClient,
     }
 }
 
-func GetJSON[T any](ctx context.Context, c *Client, url string) (*T, error) {
-    req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-    if err != nil {
-        return nil, fmt.Errorf("create request: %w", err)
-    }
+func GetJSON[T any](ctx context.Context, cache *pokecache.Cache, client *Client, url string) (*T, error) {
+	bytes, ok := cache.Get(url)
+	if ok {
+		fmt.Println("CACHE HIT:", url)
+	} else {
+		fmt.Println("CACHE MISS:", url)
+		// and we fetch
+    	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	    if err != nil {
+	        return nil, fmt.Errorf("create request: %w", err)
+	    }
 
-    res, err := c.HttpClient.Do(req)
-    if err != nil {
-        return nil, fmt.Errorf("perform request: %w", err)
-    }
-    defer res.Body.Close()
+	    res, err := client.HttpClient.Do(req)
+	    if err != nil {
+	        return nil, fmt.Errorf("perform request: %w", err)
+	    }
+	    defer res.Body.Close()
 
-    if res.StatusCode > 299 {
-        return nil, fmt.Errorf("unexpected status code: %d", res.StatusCode)
-    }
+	    if res.StatusCode > 299 {
+	        return nil, fmt.Errorf("unexpected status code: %d", res.StatusCode)
+	    }
 
-    var value T
-    if err := json.NewDecoder(res.Body).Decode(&value); err != nil {
-        return nil, fmt.Errorf("decode response body: %w", err)
-    }
+	    if bytes, err = io.ReadAll(res.Body); err != nil {
+	    	return nil, fmt.Errorf("unable to read response body in fetch: %w", err)
+	    }
+	    cache.Add(url, bytes)
+	}
 
-    return &value, nil
+	var val T
+	if err := json.Unmarshal(bytes, &val); err != nil {
+		return nil, fmt.Errorf("decode response body: %w", err)
+	}
+    return &val, nil
 }
 
 /*
 REFACTOR THESE
 */
-func (c *Client) ListLocationAreas(ctx context.Context) error {
-    res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Next)
+func (c *Client) ListLocationAreas(ctx context.Context, cache *pokecache.Cache) error {
+    res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, cache, c, c.Cfg.Next)
     if err != nil {
         return fmt.Errorf("error retrieving json: %w", err)
     }
@@ -94,8 +108,8 @@ func (c *Client) ListLocationAreas(ctx context.Context) error {
 /*
 REFACTOR THESE
 */
-func (c *Client) ListLocationAreasBack(ctx context.Context) error {
-    res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, c, c.Cfg.Previous)
+func (c *Client) ListLocationAreasBack(ctx context.Context, cache *pokecache.Cache) error {
+    res, err := GetJSON[APIResourceList[NamedAPIResource]](ctx, cache, c, c.Cfg.Previous)
     if err != nil {
         return fmt.Errorf("error retrieving json: %w", err)
     }

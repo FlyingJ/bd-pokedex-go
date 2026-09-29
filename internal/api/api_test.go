@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"bd-pokedex-go/internal/api"
+	"bd-pokedex-go/internal/pokecache"
 )
 
 type roundTripFunc func(*http.Request) (*http.Response, error)
@@ -42,7 +44,11 @@ func TestGetJSON(t *testing.T) {
 		}),
 	}
 
-	err := client.ListLocationAreas(context.Background())
+	// prepare external request cache
+	cacheTimeout := 5 * time.Second
+	cache := pokecache.NewCache(cacheTimeout)
+
+	err := client.ListLocationAreas(context.Background(), cache)
 	if err != nil {
 		t.Fatalf("ListLocationAreas returned error: %v", err)
 	}

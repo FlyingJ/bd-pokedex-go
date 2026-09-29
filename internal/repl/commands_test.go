@@ -2,8 +2,10 @@ package repl_test
 
 import (
 	"testing"
+	"time"
 
 	"bd-pokedex-go/internal/api"
+	"bd-pokedex-go/internal/pokecache"
 	"bd-pokedex-go/internal/repl"
 )
 
@@ -22,9 +24,11 @@ func TestGetCommands(t *testing.T) {
 }
 
 func TestCommandHelp(t *testing.T) {
-	c := api.NewConfig()
+	config := api.NewConfig()
+	reapTime := 5 * time.Second
+	cache := pokecache.NewCache(reapTime)
 	commandName := "help"
-	if err := repl.GetCommands()[commandName].Callback(&c); err != nil {
+	if err := repl.GetCommands()[commandName].Callback(config, cache); err != nil {
 		t.Errorf("command %s returned non-nil: %v", commandName, err)
 	}
 }

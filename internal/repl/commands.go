@@ -6,21 +6,22 @@ import (
     "os"
 
     "bd-pokedex-go/internal/api"
+    "bd-pokedex-go/internal/pokecache"
 )
 
 type Command struct {
     Name        string
     Description string
-    Callback    func(*api.Config) error
+    Callback    func(*api.Config, *pokecache.Cache) error
 }
 
-func commandExit(c *api.Config) error {
+func commandExit(config *api.Config, cache *pokecache.Cache) error {
     fmt.Println("Closing the Pokedex... Goodbye!")
     os.Exit(0)
     return nil
 }
 
-func commandHelp(c *api.Config) error {
+func commandHelp(config *api.Config, cache *pokecache.Cache) error {
     fmt.Println()
     fmt.Println("Welcome to the Pokedex!")
     fmt.Println("Usage:")
@@ -31,18 +32,18 @@ func commandHelp(c *api.Config) error {
     return nil
 }
 
-func commandMap(c *api.Config) error {
-    client := api.NewClient(c)
-    return client.ListLocationAreas(context.Background())
+func commandMap(config *api.Config, cache *pokecache.Cache) error {
+    client := api.NewClient(config)
+    return client.ListLocationAreas(context.Background(), cache)
 }
 
-func commandMapb(c *api.Config) error {
-    if c.Previous == "" {
+func commandMapb(config *api.Config, cache *pokecache.Cache) error {
+    if config.Previous == "" {
         fmt.Println("You are on the first page")
         return nil
     }
-    client := api.NewClient(c)
-    return client.ListLocationAreasBack(context.Background())
+    client := api.NewClient(config)
+    return client.ListLocationAreasBack(context.Background(), cache)
 }
 
 func GetCommands() map[string]Command {
